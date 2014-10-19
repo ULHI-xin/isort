@@ -559,9 +559,11 @@ class SortImports(object):
                 continue
 
             if ";" in line:
+                skip_line = True
                 for part in (part.strip() for part in line.split(";")):
-                    if part and not part.startswith("from ") and not part.startswith("import "):
-                        skip_line = True
+                    if part and (part.startswith("from ") or part.startswith("import ")):
+                        skip_line = False
+                        break
 
             import_type = self._import_type(line)
             if not import_type or skip_line:
